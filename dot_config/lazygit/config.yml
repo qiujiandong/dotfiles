@@ -1,0 +1,8 @@
+git:
+  log:
+    showGraph: always
+    order: topo-order
+    showWholeGraph: false
+  commit:
+    signOff: true
+  overrideGpg: true

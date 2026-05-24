@@ -1,0 +1,18 @@
+[user]
+	name = Jiandong Qiu
+	email = qiujiandong1998@gmail.com
+	signingkey = 4E78B1CCCC3FEC1E
+[commit]
+    gpgsign = true
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	co = checkout
+	ci = commit
+	br = branch
+	st = status
+[http]
+	sslVerify = false
+[init]
+	defaultBranch = main
+[core]
+	editor = nvim
