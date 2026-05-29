@@ -1,0 +1,6 @@
+README.md
+
+{{ if ne .chezmoi.osRelease.id "arch" }}
+.config/hypr
+.config/quickshell
+{{ end }}
