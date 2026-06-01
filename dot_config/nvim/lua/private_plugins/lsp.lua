@@ -88,7 +88,7 @@ local lsp_config = {
       -- gopls = {},
       pyright = {},
       rust_analyzer = {},
-      stylua = {}, -- Used to format Lua code
+      -- stylua = {}, -- Used to format Lua code
       -- Special Lua Config, as recommended by neovim help docs
       lua_ls = {
         on_init = function(client)
@@ -171,7 +171,6 @@ local lsp_config = {
       'markdownlint',
       'rstcheck',
       'sphinx-lint',
-      'stylua',
       'yamlfmt',
       'copilot-language-server',
     })
