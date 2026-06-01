@@ -3,6 +3,9 @@ return {
   'folke/sidekick.nvim',
   branch = 'main',
   opts = {
+    nes = {
+      enabled = false,
+    },
     cli = {
       mux = {
         backend = 'tmux',
