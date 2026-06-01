@@ -29,6 +29,12 @@ table.insert(plugins, {
 })
 
 table.insert(plugins, {
+  'windwp/nvim-autopairs',
+  event = 'InsertEnter',
+  opts = {},
+})
+
+table.insert(plugins, {
   'saghen/blink.cmp',
   version = 'v1',
   event = 'VimEnter',
