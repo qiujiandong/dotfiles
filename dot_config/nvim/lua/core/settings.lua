@@ -106,5 +106,6 @@ vim.filetype.add {
   extension = {
     S = 'asm',
     inc = 'asm',
+    config = 'kconfig',
   },
 }
