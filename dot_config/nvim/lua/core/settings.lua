@@ -101,3 +101,10 @@ vim.diagnostic.config {
   -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
   jump = { float = true },
 }
+
+vim.filetype.add {
+  extension = {
+    S = 'asm',
+    inc = 'asm',
+  },
+}
