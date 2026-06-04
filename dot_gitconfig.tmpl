@@ -1,6 +1,10 @@
 [user]
 	name = Jiandong Qiu
+{{- if eq .chezmoi.osRelease.id "ubuntu" }}
+	email = qiujiandong@nucleisys.com
+{{- else }}
 	email = qiujiandong1998@gmail.com
+{{- end }}
 	signingkey = 4E78B1CCCC3FEC1E
 [commit]
     gpgsign = true
