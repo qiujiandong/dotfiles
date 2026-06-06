@@ -5,7 +5,7 @@ and [Quickshell](https://quickshell.org/)
 
 ## Dependencies
 
-- quickshell, qt6-wayland
+- quickshell, qt6-wayland, upower
 - hyprland, hyprlaunch, hyprlock, hyprshutdown
 - kitty
 - zsh

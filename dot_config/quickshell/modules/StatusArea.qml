@@ -1,4 +1,5 @@
 import Quickshell.Services.SystemTray
+import Quickshell.Services.UPower
 import Quickshell.Widgets
 import QtQuick
 
@@ -68,6 +69,27 @@ Row {
           trayItem.modelData.activate()
         }
       }
+    }
+  }
+
+  Rectangle {
+    readonly property var battery: UPower.displayDevice
+    readonly property bool batteryAvailable: battery && battery.ready && battery.isPresent
+    readonly property real percent: battery.percentage * 100
+
+    visible: batteryAvailable
+    radius: 5
+    color: UPower.onBattery ? "#2a2a2a" : "#1f3a2a"
+    height: 22
+    width: batteryText.implicitWidth + 12
+
+    Text {
+      id: batteryText
+
+      anchors.centerIn: parent
+      color: "#ffffff"
+      font.pixelSize: 12
+      text: Math.round(parent.percent) + "%"
     }
   }
 }
