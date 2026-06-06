@@ -1,6 +1,10 @@
 README.md
 
-{{ if ne .chezmoi.osRelease.id "arch" }}
+{{- if ne .chezmoi.osRelease.id "arch" }}
 .config/hypr
 .config/quickshell
-{{ end }}
+{{- end }}
+
+{{- if eq .chezmoi.kernel.osrelease "6.17.4-1-yogabook" }}
+.config/mise
+{{- end }}
