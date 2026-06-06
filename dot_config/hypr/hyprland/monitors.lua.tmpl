@@ -1,5 +1,14 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 
+{{- if eq .chezmoi.kernel.osrelease "6.17.4-1-yogabook" }}
+hl.monitor({
+	output = "DSI-1",
+	mode = "1200x1920@59.98Hz",
+	position = "0x0",
+	transform = 3,
+	scale = "2",
+})
+{{- else }}
 --   x -> +
 -- y
 -- |
@@ -21,3 +30,4 @@ hl.monitor({
 	position = "0x1440",
 	scale = "2",
 })
+{{- end}}
