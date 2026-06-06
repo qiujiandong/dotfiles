@@ -18,5 +18,5 @@ and [Quickshell](https://quickshell.org/)
 - blueman, bluez, bluez-utils
 - uwsm
 - xdg-deskptop-portal, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk
-- fcitx5
+- fcitx5, fcitx5-configtool, fcitx5-chinese-addons
 - clash-verge
