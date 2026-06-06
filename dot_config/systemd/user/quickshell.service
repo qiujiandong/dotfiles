@@ -1,0 +1,15 @@
+[Unit]
+Description=Quickshell
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/quickshell
+Restart=on-failure
+
+# Wayland
+Environment=QT_QPA_PLATFORMTHEME=gtk3
+Environment=QT_WAYLAND_DECORATION=adwaita
+
+[Install]
+WantedBy=graphical-session.target
