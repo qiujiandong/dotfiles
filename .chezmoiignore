@@ -3,6 +3,7 @@ README.md
 {{- if ne .chezmoi.osRelease.id "arch" }}
 .config/hypr
 .config/quickshell
+.zprofile
 {{- end }}
 
 {{- if eq .chezmoi.kernel.osrelease "6.17.4-1-yogabook" }}

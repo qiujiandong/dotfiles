@@ -1,0 +1,3 @@
+if [ -z "$TMUX" ] && [ -z "$SSH_TTY" ] && uwsm check may-start && [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+    exec uwsm start hyprland-uwsm.desktop
+fi
