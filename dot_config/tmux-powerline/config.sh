@@ -369,7 +369,7 @@
 # tmux_mem_cpu_load.sh {
 	# Arguments passed to tmux-mem-cpu-load.
 	# See https://github.com/thewtex/tmux-mem-cpu-load for all available options.
-	# export TMUX_POWERLINE_SEG_TMUX_MEM_CPU_LOAD_ARGS="-v"
+	export TMUX_POWERLINE_SEG_TMUX_MEM_CPU_LOAD_ARGS="-g 10 -a 0"
 # }
 
 # tmux_session_info.sh {

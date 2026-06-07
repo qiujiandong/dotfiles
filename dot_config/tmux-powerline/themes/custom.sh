@@ -127,11 +127,11 @@ if [ -z "$TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS" ]; then
 		#"mailcount 9 255"
 		# "now_playing 234 37"
 		# "cpu 240 136"
-		"load 237 167"
-		# "tmux_mem_cpu_load 234 136"
+		# "load 237 167"
+		"tmux_mem_cpu_load 234 136"
 		"battery 137 127"
 		# "air ${TMUX_POWERLINE_SEG_AIR_COLOR} 255"
-		"weather 37 255"
+		# "weather 37 255"
 		#"rainbarf 0 ${TMUX_POWERLINE_DEFAULT_FOREGROUND_COLOR}"
 		# "$(
 		# 	if (($(tp_cpu_temp_at_least 60))); then
