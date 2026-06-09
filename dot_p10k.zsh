@@ -61,6 +61,7 @@
     node_version            # node.js version
     go_version              # go version (https://golang.org)
     rust_version            # rustc version (https://www.rust-lang.org)
+    ruby_mise
     # dotnet_version        # .NET version (https://dotnet.microsoft.com)
     # php_version           # php version (https://www.php.net/)
     # laravel_version       # laravel php framework version (https://laravel.com/)
@@ -1829,6 +1830,34 @@
   # can slow down prompt by 1-2 milliseconds, so it's better to keep it turned off unless you
   # really need it.
   typeset -g POWERLEVEL9K_DISABLE_HOT_RELOAD=true
+
+  function prompt_ruby_mise() {
+    local root
+
+    root=$(git rev-parse --show-toplevel 2>/dev/null)
+    [[ -z "$root" ]] && root="$PWD"
+    local found=0
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+      if [[ -f "$dir/Gemfile" ||
+            -f "$dir/.ruby-version" ]]; then
+        found=1
+        break
+      fi
+      [[ "$dir" == "$root" ]] && break
+      dir=${dir:h}
+    done
+    (( found )) || return
+
+    p10k segment -f 1 -i '💎' -t "${$(mise current ruby 2>/dev/null):#ruby}"
+  }
+
+  function instant_prompt_ruby_mise() {
+    prompt_ruby_mise
+  }
+
+  typeset -g POWERLEVEL9K_RUBY_MISE_FOREGROUND=0
+  typeset -g POWERLEVEL9K_RUBY_MISE_BACKGROUND=150
 
   # If p10k is already loaded, reload configuration.
   # This works even with POWERLEVEL9K_DISABLE_HOT_RELOAD=true.
