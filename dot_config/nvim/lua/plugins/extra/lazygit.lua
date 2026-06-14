@@ -18,5 +18,4 @@ return {
     { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
     { '<leader>lk', '<cmd>LazyGitLog<cr>', desc = 'LazyGit Log' },
   },
-  opts = {},
 }
