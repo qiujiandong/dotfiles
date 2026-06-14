@@ -8,6 +8,8 @@
 	signingkey = 4E78B1CCCC3FEC1E
 [commit]
     gpgsign = true
+[format]
+	signoff = true
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	co = checkout
@@ -24,3 +26,15 @@
     autoStash = true
 [pull]
 	rebase = true
+[credential "smtp://smtp.gmail.com:465"]
+	helper =
+	helper = gmail
+[sendemail]
+	smtpEncryption = ssl
+	smtpServer = smtp.gmail.com
+	smtpUser = qiujiandong1998@gmail.com
+	smtpServerPort = 465
+	smtpAuth = OAUTHBEARER
+	from = Jiandong Qiu <qiujiandong1998@gmail.com>
+	confirm = auto
+	annotate = true
