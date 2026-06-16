@@ -59,4 +59,11 @@ table.insert(plugins, { -- Highlight, edit, and navigate code
   end,
 })
 
+-- See https://github.com/nvim-treesitter/nvim-treesitter-context
+table.insert(plugins, {
+  'nvim-treesitter/nvim-treesitter-context',
+  lazy = false,
+  opts = {},
+})
+
 return plugins
