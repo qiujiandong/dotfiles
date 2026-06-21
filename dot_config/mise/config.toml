@@ -1,6 +1,8 @@
 [tools]
 go = "1.26.4"
 node = "lts"
+pipx = "latest"
+"pipx:b4" = "latest"
 python = "3.13.13"
 ruby = "3.4.9"
 rust = "nightly"
