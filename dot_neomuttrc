@@ -17,8 +17,12 @@ set mbox_type = Maildir
 set folder = "~/Mail/Gmail"
 set spoolfile = "+INBOX"
 
-# Adjust these names if your Gmail labels are localized.
-set record = "+[Gmail]/Sent Mail"
+# When mbsync copy emails in [Gmail]/Sent, the email will be
+# sent twice.
+# set record = "+[Gmail]/Sent Mail"
+set copy = no
+unset record
+
 set postponed = "+[Gmail]/Drafts"
 set trash = "+[Gmail]/Trash"
 
