@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commit From Staged"
+  short_description: "Generate and commit staged Git changes"
+  default_prompt: "Use $git-commit-staged to generate a commit message from the current staged changes and create the commit if anything is staged."
