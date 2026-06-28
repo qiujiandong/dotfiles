@@ -20,3 +20,10 @@ and [Quickshell](https://quickshell.org/)
 - xdg-deskptop-portal, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk
 - fcitx5, fcitx5-configtool, fcitx5-chinese-addons
 - clash-verge
+
+## Mail related apps
+
+- neomutt
+- mbsync
+- msmtp
+- w3m

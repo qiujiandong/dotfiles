@@ -1,0 +1,155 @@
+# ------------------------------------------------------------
+# Basic identity
+# ------------------------------------------------------------
+
+set realname = "Jiandong Qiu"
+set from = "qiujiandong1998@gmail.com"
+set use_from = yes
+set envelope_from = yes
+
+# ------------------------------------------------------------
+# Maildir layout
+# ------------------------------------------------------------
+
+set mbox_type = Maildir
+
+# This should match your mbsync Maildir path.
+set folder = "~/Mail/Gmail"
+set spoolfile = "+INBOX"
+
+# Adjust these names if your Gmail labels are localized.
+set record = "+[Gmail]/Sent Mail"
+set postponed = "+[Gmail]/Drafts"
+set trash = "+[Gmail]/Trash"
+
+mailboxes +INBOX \
+          "+[Gmail]/All Mail" \
+          "+[Gmail]/Sent Mail" \
+          "+[Gmail]/Drafts" \
+          "+[Gmail]/Trash"
+
+# ------------------------------------------------------------
+# Cache
+# ------------------------------------------------------------
+
+set header_cache = "~/.cache/neomutt/headers"
+set message_cachedir = "~/.cache/neomutt/bodies"
+set certificate_file = "~/.cache/neomutt/certificates"
+
+# ------------------------------------------------------------
+# Editor
+# ------------------------------------------------------------
+
+set editor = "nvim"
+set edit_headers = yes
+
+# ------------------------------------------------------------
+# Sending mail via msmtp
+# ------------------------------------------------------------
+
+set sendmail = "/usr/bin/msmtp -a gmail"
+set sendmail_wait = 0
+
+# Ask before adding CC. Useful for checking kernel mailing list replies.
+set askcc = yes
+set askbcc = no
+
+# ------------------------------------------------------------
+# Charset
+# ------------------------------------------------------------
+
+set charset = "utf-8"
+set send_charset = "utf-8"
+
+# ------------------------------------------------------------
+# Sidebar settings
+# ------------------------------------------------------------
+
+set sidebar_visible = yes
+set sidebar_width = 28
+set sidebar_short_path = yes
+set sidebar_format = "%B%* %?N?%N/?%S"
+
+bind index,pager \Cp sidebar-prev
+bind index,pager \Cn sidebar-next
+bind index,pager \Co sidebar-open
+
+# ------------------------------------------------------------
+# Kernel development friendly plain-text settings
+# ------------------------------------------------------------
+
+# Important: do not send format=flowed.
+set text_flowed = no
+
+# Include original mail when replying.
+set include = yes
+
+# Reply attribution.
+set attribution = "On %d, %n wrote:"
+
+# Avoid visual markers and smart wrapping.
+set markers = no
+set smart_wrap = no
+
+# Keep quoting simple.
+set quote_regexp = "^( {0,4}[>|:#%]|[A-Za-z]+>)"
+
+# Do not add automatic signature separator.
+unset sig_dashes
+
+# Do not generate local domain automatically.
+unset use_domain
+
+# ------------------------------------------------------------
+# Threading and sorting
+# ------------------------------------------------------------
+
+set sort = threads
+set sort_aux = reverse-last-date-received
+set strict_threads = yes
+
+# ------------------------------------------------------------
+# Reading mail
+# ------------------------------------------------------------
+
+set index_format = "%4C %Z %{%m-%d %H:%M} %-18.18F %s"
+set pager_index_lines = 10
+set pager_context = 3
+set pager_stop = yes
+
+set mail_check = 60
+set timeout = 10
+set wait_key = no
+
+# Prefer plain text.
+set mailcap_path = "~/.mailcap"
+alternative_order text/plain text/enriched text/html
+auto_view text/html
+
+# ------------------------------------------------------------
+# Search
+# ------------------------------------------------------------
+
+set thorough_search = yes
+
+# ------------------------------------------------------------
+# Useful key bindings
+# ------------------------------------------------------------
+
+# Show or hide full headers.
+bind index,pager h display-toggle-weed
+
+# Group reply: usually useful for kernel mailing list discussions.
+bind index,pager g group-reply
+
+# List reply: works when List-Post header exists.
+bind index,pager L list-reply
+
+# Sync current mailbox.
+bind index $ sync-mailbox
+
+# View raw message.
+macro index,pager \cl "<pipe-message>less<enter>" "View raw message with less"
+
+# Sync current mailbox.
+macro index O "<shell-escape>flock -n ~/.cache/mbsync.lock mbsync gmail<enter><sync-mailbox>" "sync mail with mbsync"
