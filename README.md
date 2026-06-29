@@ -24,4 +24,4 @@ For update workflows and module-level documentation, see the documentation
 site:
 
 - Source: [`docs/`](docs/index.md)
-- Published site: `https://qiujiandong.github.io/dotfiles/`
+- Published site: [https://qiujiandong.github.io/dotfiles/](https://qiujiandong.github.io/dotfiles/)
