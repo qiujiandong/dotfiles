@@ -1,3 +1,9 @@
+[![Docs](https://img.shields.io/github/actions/workflow/status/qiujiandong/dotfiles/docs.yml?label=docs)](https://github.com/qiujiandong/dotfiles/actions/workflows/docs.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-online-222?logo=githubpages)](https://qiujiandong.github.io/dotfiles/)
+[![Platform](https://img.shields.io/badge/platform-Arch%20Linux-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![Managed by chezmoi](https://img.shields.io/badge/managed%20by-chezmoi-40A02B)](https://www.chezmoi.io/)
+[![License](https://img.shields.io/github/license/qiujiandong/dotfiles)](LICENSE)
+
 # Jiandong's Dotfiles
 
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/), centered on
