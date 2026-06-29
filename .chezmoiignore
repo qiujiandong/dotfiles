@@ -1,4 +1,13 @@
 README.md
+docs
+mkdocs.yml
+requirements-docs.txt
+.github
+.github/**
+
+.venv/
+venv/
+mkdocs/
 
 {{- if ne .chezmoi.osRelease.id "arch" }}
 .config/hypr

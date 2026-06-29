@@ -1,1 +1,6 @@
 .stylua.toml
+site
+
+.venv/
+venv/
+mkdocs/

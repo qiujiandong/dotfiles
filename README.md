@@ -1,29 +1,27 @@
 # Jiandong's Dotfiles
 
-Here is my dotfiles, focused on Arch Linux with [Hyprland](https://hypr.land/)
-and [Quickshell](https://quickshell.org/)
+Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/), centered on
+Arch Linux, [Hyprland](https://hypr.land/), and
+[Quickshell](https://quickshell.org/).
 
-## Dependencies
+This repository is organized as a practical daily-driver setup rather than a
+generic starter kit. The main areas are:
 
-- quickshell, qt6-wayland, upower
-- hyprland, hyprlaunch, hyprlock, hyprshutdown
-- kitty
-- zsh
-- git
-- dolphin
-- microsoft-edge-stable
-- lazygit
-- neovim
-- networkmanager, network-manager-applet
-- blueman, bluez, bluez-utils
-- uwsm
-- xdg-deskptop-portal, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk
-- fcitx5, fcitx5-configtool, fcitx5-chinese-addons
-- clash-verge
+- Desktop: Hyprland, Quickshell, systemd user services
+- Terminal: zsh, Powerlevel10k, tmux, kitty
+- Editor: Neovim with `zpack.nvim`
+- Mail: neomutt, mbsync, msmtp, w3m
 
-## Mail related apps
+## Quick Start
 
-- neomutt
-- mbsync
-- msmtp
-- w3m
+Install `chezmoi`, clone the source state, and apply it:
+
+```bash
+chezmoi init --apply qiujiandong
+```
+
+For update workflows and module-level documentation, see the documentation
+site:
+
+- Source: [`docs/`](docs/index.md)
+- Published site: `https://qiujiandong.github.io/dotfiles/`

@@ -1,0 +1,30 @@
+site_name: Jiandong's Dotfiles
+site_url: https://qiujiandong.github.io/dotfiles/
+repo_url: https://github.com/qiujiandong/dotfiles
+repo_name: qiujiandong/dotfiles
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+nav:
+  - Home: index.md
+  - Setup: setup.md
+  - Architecture: architecture.md
+  - Modules:
+      - Hyprland: modules/hyprland.md
+      - Quickshell: modules/quickshell.md
+      - Shell and Terminal: modules/shell.md
+      - Neovim: modules/neovim.md
+      - Mail: modules/mail.md
+  - Customization: customization.md
+  - Host Specific Behavior: host-specific.md
+  - Troubleshooting: troubleshooting.md
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
