@@ -4,8 +4,8 @@ LICENSE
 docs
 mkdocs.yml
 requirements-docs.txt
-.github
-.github/**
+.github/
+site/
 
 .venv/
 venv/
