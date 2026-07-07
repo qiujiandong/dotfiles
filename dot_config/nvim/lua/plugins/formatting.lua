@@ -34,6 +34,7 @@ table.insert(plugins, {
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
+      c = { 'clang-format' },
       lua = { 'stylua' },
       yaml = { 'yamlfmt' },
       rust = { 'rustfmt' },
