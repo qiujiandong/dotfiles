@@ -1,5 +1,5 @@
 return {
-  'iamcco/markdown-preview.nvim',
+  'qiujiandong/markdown-preview.nvim',
   event = 'VeryLazy',
   cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
   ft = { 'markdown' },
@@ -13,7 +13,7 @@ return {
     vim.g.mkdp_browserfunc = 'OpenBrowserWSL'
   end,
 {{- end }}
--- Manually install with node v24.16.0
--- NODE_OPTIONS=--openssl-legacy-provider npx yarn install
--- NODE_OPTIONS=--openssl-legacy-provider npx yarn build
+  -- Manually install with node v24.16.0
+  -- NODE_OPTIONS=--openssl-legacy-provider npx yarn install
+  -- NODE_OPTIONS=--openssl-legacy-provider npx yarn build
 }
