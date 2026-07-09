@@ -1,0 +1,13 @@
+export EDITOR=nvim
+
+[[ ! -f "$HOME/.cargo/env" ]] || source "$HOME/.cargo/env"
+
+export RUSTUP_DIST_SERVER="https://rsproxy.cn"
+export RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup"
+
+{{ if .proxy.enabled -}}
+export http_proxy={{ .proxy.http | quote }}
+export https_proxy={{ .proxy.https | quote }}
+export HTTP_PROXY={{ .proxy.http | quote }}
+export HTTPS_PROXY={{ .proxy.https | quote }}
+{{- end }}
