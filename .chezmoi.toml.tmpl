@@ -1,0 +1,8 @@
+{{- $proxy_en := promptStringOnce .proxy "enabled" "enable proxy" "true" -}}
+{{- $http := promptStringOnce .proxy "http" "http_proxy" "http://127.0.0.1:7890" -}}
+{{- $https := promptStringOnce .proxy "https" "https_proxy" "http://127.0.0.1:7890" -}}
+
+[data.proxy]
+enabled = true
+http = {{ $http | quote }}
+https = {{ $https | quote }}

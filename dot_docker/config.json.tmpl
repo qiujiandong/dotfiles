@@ -1,0 +1,11 @@
+{{- if .proxy.enabled -}}
+{
+  "proxies": {
+    "default": {
+      "httpProxy": {{ .proxy.http | quote }},
+      "httpsProxy": {{ .proxy.https | quote }},
+      "noProxy": "127.0.0.0/8"
+    }
+  }
+}
+{{- end }}
