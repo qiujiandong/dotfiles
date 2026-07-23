@@ -11,6 +11,8 @@ site/
 venv/
 mkdocs/
 
+.local/share/fonts/**
+
 {{- if ne .chezmoi.osRelease.id "arch" }}
 .config/hypr
 .config/quickshell
