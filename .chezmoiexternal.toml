@@ -1,20 +1,20 @@
 [".oh-my-zsh"]
     type = "git-repo"
-    url = "https://github.com/ohmyzsh/ohmyzsh.git"
+    url = "https://gitee.com/jayden1998/ohmyzsh.git"
     refreshPeriod = "168h"
 [".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
     type = "git-repo"
-    url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    url = "https://gitee.com/jayden1998/zsh-syntax-highlighting.git"
     refreshPeriod = "168h"
 [".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
     type = "git-repo"
-    url = "https://github.com/zsh-users/zsh-autosuggestions.git"
+    url = "https://gitee.com/jayden1998/zsh-autosuggestions.git"
     refreshPeriod = "168h"
 [".oh-my-zsh/custom/themes/powerlevel10k"]
     type = "git-repo"
-    url = "https://github.com/romkatv/powerlevel10k.git"
+    url = "https://gitee.com/jayden1998/powerlevel10k.git"
     refreshPeriod = "168h"
 [".tmux/plugins/tpm"]
     type = "git-repo"
-    url = "https://github.com/tmux-plugins/tpm.git"
+    url = "https://gitee.com/jayden1998/tpm.git"
     refreshPeriod = "168h"
