@@ -10,4 +10,6 @@ export http_proxy={{ .proxy.http | quote }}
 export https_proxy={{ .proxy.https | quote }}
 export HTTP_PROXY={{ .proxy.http | quote }}
 export HTTPS_PROXY={{ .proxy.https | quote }}
+export NO_PROXY=0.0.0.0,127.0.0.1,localhost
+export no_proxy=$NO_PROXY
 {{- end }}
