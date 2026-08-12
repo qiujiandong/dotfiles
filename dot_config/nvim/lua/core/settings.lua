@@ -107,6 +107,7 @@ vim.filetype.add {
     S = 'asm',
     inc = 'asm',
     config = 'kconfig',
+    scpp = 'cpp',
   },
 }
 
