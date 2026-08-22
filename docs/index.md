@@ -19,6 +19,7 @@ machine-specific overrides.
 - `zsh`, `tmux`, and `kitty` define the terminal workflow.
 - `nvim` is the editing environment, loaded through `zpack.nvim`.
 - `neomutt`, `mbsync`, and `msmtp` provide a plain-text mail workflow.
+- `docker` configures Docker CLI credentials and optional container proxies.
 
 ## Reading Order
 

@@ -21,6 +21,7 @@ nav:
       - Shell and Terminal: modules/shell.md
       - Neovim: modules/neovim.md
       - Mail: modules/mail.md
+      - Docker: modules/docker.md
   - Customization: customization.md
   - Host Specific Behavior: host-specific.md
   - Troubleshooting: troubleshooting.md
