@@ -1,6 +1,6 @@
 ---@type zpack.Spec
 return {
-  'folke/sidekick.nvim',
+  'qiujiandong/sidekick.nvim',
   branch = 'main',
   opts = {
     nes = {
