@@ -2,5 +2,7 @@
 return {
   'karb94/neoscroll.nvim',
   event = 'VeryLazy',
-  opts = {},
+  opts = {
+    hide_cursor = false,
+  },
 }
