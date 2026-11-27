@@ -38,6 +38,7 @@ table.insert(plugins, {
   'saghen/blink.cmp',
   version = 'v1',
   event = 'VimEnter',
+  build = 'cargo build --release',
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
