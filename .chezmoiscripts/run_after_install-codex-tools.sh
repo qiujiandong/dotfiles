@@ -4,7 +4,7 @@ set -eu
 
 export PATH="$HOME/.local/bin:$PATH"
 
-echo 'Please install and manage mise manually. Installing tools through mise can take a while, so it is not run automatically during chezmoi apply.'
+echo 'Install and manage mise manually, then run `mise doctor` to check your setup.'
 
 # Run outside the source checkout so Codex uses the user's global setup.
 cd "$HOME"
@@ -21,13 +21,8 @@ install_ponytail() {
     fi
 }
 
-# Install tools first; a failed tool update should not block an available Codex.
-status=0
-"$HOME/.local/bin/update_tools" || status=1
 if command -v codex >/dev/null 2>&1; then
-    install_ponytail || status=1
+    install_ponytail
 else
-    echo 'Codex is unavailable; cannot install Ponytail.' >&2
-    status=1
+    echo 'Codex is unavailable; skipping Ponytail installation. Run update_local manually to install or update tools.'
 fi
-exit "$status"

@@ -34,9 +34,11 @@ site:
 - Source: [`docs/`](docs/index.md)
 - Published site: [https://qiujiandong.github.io/dotfiles/](https://qiujiandong.github.io/dotfiles/)
 
-After applying the dotfiles, the install hook runs `~/.local/bin/update_tools`
-to download and install Neovim, Codex, and Codebase Memory MCP, then installs
-the Ponytail plugin for Codex. Run `update_tools` again to update these tools.
+Run `~/.local/bin/update_local` manually to install or update Neovim, Codex,
+Codebase Memory MCP, and Maple Mono NF CN fonts. These downloads are not run
+during `chezmoi apply`. Use `update_local maple-font` to update only the fonts,
+or `update_local --check` to check versions without installing.
+The install hook installs the Ponytail plugin only when Codex is available.
 
 Install and manage mise manually. Installing tools through mise can take a
 while, so it is not run automatically during `chezmoi apply`.
