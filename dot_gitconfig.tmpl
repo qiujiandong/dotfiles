@@ -1,6 +1,6 @@
 [user]
 	name = Jiandong Qiu
-{{- if eq .chezmoi.hostname "XL-NS28KGJQIJDI" }}
+{{- if hasSuffix ".corp.nucleisys.com" (lower .chezmoi.fqdnHostname) }}
 	email = qiujiandong@nucleisys.com
 {{- else }}
 	email = qiujiandong1998@gmail.com
