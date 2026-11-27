@@ -21,6 +21,28 @@ This keeps one repository usable across:
 
 ## Maintenance Guidance
 
+### SSH Configuration
+
+SSH configuration is maintained manually on each machine. To connect to
+GitHub's SSH endpoint on port 443 through a local HTTP CONNECT proxy, add
+the following to `~/.ssh/config` as needed:
+
+```sshconfig
+Host github.com
+    HostName ssh.github.com
+    Port 443
+    User git
+    ProxyCommand nc -X connect -x 127.0.0.1:7890 %h %p
+```
+
+This example requires an HTTP CONNECT proxy on `127.0.0.1:7890` and an
+OpenBSD-compatible `nc` supporting `-X connect -x`. Adjust the proxy address
+and command for each machine; these arguments are not supported by every
+`nc` implementation. This repository records the example only and does
+not automatically create or update SSH configuration.
+
+### Adding Host Conditions
+
 When adding a new host-specific rule:
 
 - prefer a narrow condition
