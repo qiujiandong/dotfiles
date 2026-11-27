@@ -1,0 +1,223 @@
+#!/usr/bin/env bash
+# Bash 3.2+ and standard Unix tools.
+set -euo pipefail
+root="$HOME/.local"
+check=0
+tools=()
+for arg in "$@"; do
+    case "$arg" in
+        --check) check=1 ;;
+        -h|--help)
+            echo 'Usage: update_tools.sh [--check] [codex|nvim|neovim|codebase-memory-mcp ...]'
+            echo 'Install/update all tools by default; --check only compares versions.'
+            exit 0 ;;
+        neovim) tools+=(nvim) ;;
+        codex|nvim|codebase-memory-mcp) tools+=("$arg") ;;
+        *) echo "Unknown argument: $arg" >&2; exit 2 ;;
+    esac
+done
+if (( ${#tools[@]} == 0 )); then tools=(codex nvim codebase-memory-mcp); fi
+
+fetch() {
+    curl --fail --location --silent --show-error --retry 3 \
+        --connect-timeout 15 --max-time 600 --proto '=https' --proto-redir '=https' "$@"
+}
+
+version() {
+    local output
+    [[ -x "$1" ]] || return 0
+    output=$("$1" --version 2>/dev/null) || return 0
+    output=${output%%$'\n'*}
+    if [[ "$output" =~ ([0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?) ]]; then
+        printf '%s\n' "${BASH_REMATCH[1]}"
+    fi
+}
+
+verify_archive() {
+    local archive=$1 manifest=$2 name=$3 expected actual
+    expected=$(awk -v name="$name" '$2 == name || $2 == "*" name {print tolower($1)}' "$manifest" | sort -u)
+    [[ "$expected" =~ ^[0-9a-f]{64}$ ]] || { echo "No unique SHA-256 checksum found: $name" >&2; return 1; }
+    if command -v sha256sum >/dev/null 2>&1; then
+        actual=$(sha256sum "$archive")
+    else
+        actual=$(shasum -a 256 "$archive")
+    fi
+    [[ "${actual%% *}" == "$expected" ]] || { echo "SHA-256 verification failed: $name" >&2; return 1; }
+}
+
+neovim_checksum() {
+    local metadata=$1 asset=$2 line selected=0
+    local name_pattern='"name":[[:space:]]*"([^"]+)"'
+    local digest_pattern='"digest":[[:space:]]*"sha256:([0-9a-fA-F]{64})"'
+    # shortcut: expects GitHub's formatted JSON; revisit if API formatting changes.
+    while IFS= read -r line; do
+        if [[ "$line" =~ $name_pattern ]]; then
+            selected=0
+            if [[ "${BASH_REMATCH[1]}" == "$asset" ]]; then selected=1; fi
+        fi
+        if (( selected )) && [[ "$line" =~ $digest_pattern ]]; then
+            printf '%s  %s\n' "${BASH_REMATCH[1]}" "$asset"
+            return 0
+        fi
+    done < "$metadata"
+    echo "GitHub did not provide a SHA-256 checksum: $asset" >&2
+    return 1
+}
+
+update() (
+    set -e
+    tool=$1
+    case "$tool" in
+        codex) repo=openai/codex; entry=bin/codex ;;
+        nvim) repo=neovim/neovim; entry=bin/nvim ;;
+        codebase-memory-mcp) repo=DeusData/codebase-memory-mcp; entry=codebase-memory-mcp ;;
+    esac
+    if [[ "$tool" == nvim && "$(uname -s)" == Linux ]]; then
+        glibc=$(getconf GNU_LIBC_VERSION 2>/dev/null) || {
+            echo 'Cannot determine the glibc version; Neovim release binaries require glibc' >&2; exit 1;
+        }
+        [[ "$glibc" =~ ^glibc[[:space:]]+([0-9]+)\.([0-9]+)$ ]] || {
+            echo "Unrecognized glibc version: $glibc" >&2; exit 1;
+        }
+        major=$((10#${BASH_REMATCH[1]})) minor=$((10#${BASH_REMATCH[2]}))
+        if (( major < 2 || (major == 2 && minor < 17) )); then
+            echo 'Neovim compatibility builds require glibc 2.17 or newer' >&2; exit 1
+        fi
+        # Main releases use Ubuntu 22.04; use the glibc 2.17 builds on older systems.
+        if (( major == 2 && minor < 35 )); then repo=neovim/neovim-releases; fi
+        printf 'nvim: %s; using %s\n' "$glibc" "$repo"
+    fi
+    target="$root/$tool"
+    link="$root/bin/$tool"
+    current=$(version "$target/$entry")
+    [[ -n "$current" ]] || current=$(version "$link")
+    release=$(fetch -o /dev/null -w '%{url_effective}' "https://github.com/$repo/releases/latest")
+    [[ "$release" == "https://github.com/$repo/releases/tag/"* ]] || {
+        echo "Cannot determine the latest release: $release" >&2; exit 1;
+    }
+    tag=${release##*/}
+    latest=${tag#rust-v}; latest=${latest#v}
+    [[ "$latest" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?$ ]] || {
+        echo "Unrecognized release version: $tag" >&2; exit 1;
+    }
+    printf '%s: local %s -> latest %s\n' "$tool" "${current:-not installed/unable to run}" "$latest"
+    (( check == 0 )) || exit 0
+    [[ ! -L "$target" && ( ! -e "$target" || -d "$target" ) ]] || {
+        echo "Installation path must be a directory, not a symlink: $target" >&2; exit 1;
+    }
+    [[ ! -d "$link" ]] || { echo "Refusing to replace a directory: $link" >&2; exit 1; }
+    previous="$target.previous"
+    legacy="$target.previous-bin"
+    [[ -L "$link" || ! -e "$link" || ( ! -e "$legacy" && ! -L "$legacy" ) ]] || {
+        echo "Legacy binary backup already exists; resolve it first: $legacy" >&2; exit 1;
+    }
+    work=$(mktemp -d "$root/.$tool-update.XXXXXXXX")
+    old_moved=0 new_moved=0 legacy_moved=0 committed=0
+    cleanup() {
+        result=$?
+        trap - EXIT
+        if (( ! committed )); then
+            if (( legacy_moved )); then mv -f -- "$legacy" "$link" || result=1; fi
+            if (( new_moved )); then rm -rf -- "$target" || result=1; fi
+            if (( old_moved )); then mv -- "$previous" "$target" || result=1; fi
+        fi
+        rm -rf -- "$work"
+        exit "$result"
+    }
+    trap cleanup EXIT
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+    if [[ "$current" != "$latest" || "$(version "$target/$entry")" != "$latest" ]]; then
+        mkdir "$work/new"
+        base="https://github.com/$repo/releases/download/$tag"
+        if [[ "$tool" == codebase-memory-mcp ]]; then
+            # Pin both the official installer and its assets to the release checked above.
+            fetch -o "$work/install.sh" "https://raw.githubusercontent.com/$repo/$tag/install.sh"
+            CBM_DOWNLOAD_URL="$base" bash "$work/install.sh" --dir "$work/new" --skip-config
+        else
+            case "$(uname -s)" in
+                Linux) os=linux; triple=unknown-linux-musl ;;
+                Darwin) os=macos; triple=apple-darwin ;;
+                *) echo 'Only Linux/macOS are supported; use WSL on Windows' >&2; exit 1 ;;
+            esac
+            case "$(uname -m)" in
+                x86_64|amd64) arch=x86_64; cpu=x86_64 ;;
+                aarch64|arm64) arch=arm64; cpu=aarch64 ;;
+                *) echo 'Only x86_64/ARM64 are supported' >&2; exit 1 ;;
+            esac
+            if [[ "$tool" == nvim ]]; then
+                asset="nvim-$os-$arch.tar.gz"
+            else
+                asset="codex-package-$cpu-$triple.tar.gz"; checksums=codex-package_SHA256SUMS
+            fi
+            echo "  Downloading $asset"
+            fetch -o "$work/release.tar.gz" "$base/$asset"
+            if [[ "$tool" == nvim ]]; then
+                fetch -o "$work/release.json" "https://api.github.com/repos/$repo/releases/tags/$tag"
+                neovim_checksum "$work/release.json" "$asset" > "$work/checksums"
+            else
+                fetch -o "$work/checksums" "$base/$checksums"
+            fi
+            verify_archive "$work/release.tar.gz" "$work/checksums" "$asset"
+            tar -tzf "$work/release.tar.gz" > "$work/members"
+            if LC_ALL=C grep -Eq '(^/|(^|/)\.\.(/|$))' "$work/members"; then
+                echo 'Archive contains paths outside the destination; refusing to extract' >&2; exit 1
+            fi
+            if [[ "$tool" == nvim ]]; then
+                tar -xzf "$work/release.tar.gz" -C "$work/new" --strip-components=1
+            else
+                tar -xzf "$work/release.tar.gz" -C "$work/new"
+                for part in bin codex-path codex-resources codex-package.json; do
+                    [[ -e "$work/new/$part" ]] || { echo "Codex package is missing $part" >&2; exit 1; }
+                done
+            fi
+        fi
+        [[ "$(version "$work/new/$entry")" == "$latest" ]] || {
+            echo 'New binary cannot run or its version does not match the release' >&2; exit 1;
+        }
+        if [[ -e "$target" ]]; then
+            [[ ! -L "$previous" && ( ! -e "$previous" || -d "$previous" ) ]] || {
+                echo "Backup path must be a directory, not a symlink: $previous" >&2; exit 1;
+            }
+            rm -rf -- "$previous"
+            mv -- "$target" "$previous"
+            old_moved=1
+        fi
+        mv -- "$work/new" "$target"
+        new_moved=1
+    fi
+    ln -s -- "$target/$entry" "$work/link"
+    if [[ -e "$link" && ! -L "$link" ]]; then
+        mv -- "$link" "$legacy"
+        legacy_moved=1
+    fi
+    mv -f -- "$work/link" "$link"
+    committed=1
+    echo "  Ready: $link -> $target/$entry"
+)
+
+for dependency in curl tar awk grep sort mktemp; do
+    command -v "$dependency" >/dev/null 2>&1 || { echo "Missing command: $dependency" >&2; exit 1; }
+done
+if ! command -v sha256sum >/dev/null 2>&1 && ! command -v shasum >/dev/null 2>&1; then
+    echo 'sha256sum or shasum is required' >&2; exit 1
+fi
+if (( ! check )); then
+    mkdir -p -- "$root/bin"
+    lock="$root/.update-tools.lock.d"
+    mkdir -- "$lock" 2>/dev/null || { echo "Another update is running, or a stale lock exists: $lock" >&2; exit 1; }
+    trap 'rmdir -- "$lock"' EXIT
+fi
+failed=0
+for tool in "${tools[@]}"; do
+    # Keep errexit active inside each tool's subshell and continue after failures.
+    set +e
+    update "$tool"
+    result=$?
+    set -e
+    if (( result != 0 )); then
+        echo "$tool: installation/check failed" >&2
+        failed=1
+    fi
+done
+exit "$failed"

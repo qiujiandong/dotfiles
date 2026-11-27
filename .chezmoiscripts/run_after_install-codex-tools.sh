@@ -2,33 +2,12 @@
 
 set -eu
 
-export PATH="$PATH:$HOME/.local/bin"
-command -v codex >/dev/null 2>&1 || exit 0
+export PATH="$HOME/.local/bin:$PATH"
+
+echo 'Please install and manage mise manually. Installing tools through mise can take a while, so it is not run automatically during chezmoi apply.'
 
 # Run outside the source checkout so Codex uses the user's global setup.
 cd "$HOME"
-
-install_codebase_memory() {
-    if command -v codebase-memory-mcp >/dev/null 2>&1; then
-        if [ -f "$HOME/.agents/skills/codebase-memory/SKILL.md" ] &&
-            codex mcp get codebase-memory-mcp >/dev/null 2>&1; then
-            return
-        fi
-        codebase-memory-mcp install -y --clients=codex
-    else
-        case "$(uname -s):$(uname -m)" in
-            Linux:x86_64|Linux:aarch64|Darwin:x86_64|Darwin:arm64)
-                installer="$(mktemp)" || return 1
-                trap 'rm -f "$installer"' EXIT
-                curl -fsSL https://raw.githubusercontent.com/DeusData/codebase-memory-mcp/main/install.sh > "$installer" || return 1
-                bash "$installer" --clients=codex
-                ;;
-            *)
-                echo "Codebase Memory MCP: no upstream binary for this platform." >&2
-                ;;
-        esac
-    fi
-}
 
 install_ponytail() {
     marketplaces="$(codex plugin marketplace list)" || return 1
@@ -42,8 +21,13 @@ install_ponytail() {
     fi
 }
 
-# Run each installer so one upstream failure does not block the other.
+# Install tools first; a failed tool update should not block an available Codex.
 status=0
-(install_codebase_memory) || status=1
-install_ponytail || status=1
+"$HOME/.local/bin/update_tools" || status=1
+if command -v codex >/dev/null 2>&1; then
+    install_ponytail || status=1
+else
+    echo 'Codex is unavailable; cannot install Ponytail.' >&2
+    status=1
+fi
 exit "$status"

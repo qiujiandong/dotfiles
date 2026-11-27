@@ -33,3 +33,10 @@ site:
 
 - Source: [`docs/`](docs/index.md)
 - Published site: [https://qiujiandong.github.io/dotfiles/](https://qiujiandong.github.io/dotfiles/)
+
+After applying the dotfiles, the install hook runs `~/.local/bin/update_tools`
+to download and install Neovim, Codex, and Codebase Memory MCP, then installs
+the Ponytail plugin for Codex. Run `update_tools` again to update these tools.
+
+Install and manage mise manually. Installing tools through mise can take a
+while, so it is not run automatically during `chezmoi apply`.
