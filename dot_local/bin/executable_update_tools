@@ -128,7 +128,7 @@ update() (
     trap 'exit 130' INT
     trap 'exit 143' TERM
     if [[ "$current" != "$latest" || "$(version "$target/$entry")" != "$latest" ]]; then
-        mkdir "$work/new"
+        mkdir -m 755 "$work/new"
         base="https://github.com/$repo/releases/download/$tag"
         if [[ "$tool" == codebase-memory-mcp ]]; then
             # Pin both the official installer and its assets to the release checked above.
