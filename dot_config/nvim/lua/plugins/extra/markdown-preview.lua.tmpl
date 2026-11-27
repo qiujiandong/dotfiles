@@ -3,7 +3,7 @@ return {
   event = 'VeryLazy',
   cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
   ft = { 'markdown' },
-{{- if eq .chezmoi.osRelease.id "ubuntu" }}
+{{- if and (eq .chezmoi.os "linux") (contains "microsoft" (lower .chezmoi.kernel.osrelease)) }}
   init = function()
     vim.cmd [[
     function! OpenBrowserWSL(url)

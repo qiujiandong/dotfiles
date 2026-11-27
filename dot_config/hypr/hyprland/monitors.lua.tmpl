@@ -1,6 +1,6 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 
-{{- if eq .chezmoi.kernel.osrelease "6.17.4-1-yogabook" }}
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.kernel.osrelease "6.17.4-1-yogabook") }}
 hl.monitor({
 	output = "DSI-1",
 	mode = "1200x1920@59.98Hz",
