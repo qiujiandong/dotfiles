@@ -11,9 +11,4 @@ vim.pack.add { 'https://github.com/zuqini/zpack.nvim' }
 require('zpack').setup {
   { import = 'plugins' },
   { import = 'plugins.extra' },
-{{- if eq .chezmoi.osRelease.id "loongnix-server" }}
-  performance = {
-    vim_loader = false,
-  },
-{{- end }}
 }
